@@ -1,0 +1,817 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>CAPITAL FLOW | Professional Trading Community</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      .grid-overlay {
+        background-image:
+          linear-gradient(to right, rgba(37,170,225,0.08) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(37,170,225,0.08) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
+      .noise-overlay {
+        background-image: "/images/carbon-fibre.png";
+        opacity: 0.03;
+      }
+      @keyframes pulse-glow-blue {
+        0%   { box-shadow: 0 0 0 0 rgba(37,170,225,0.4); }
+        70%  { box-shadow: 0 0 0 15px rgba(37,170,225,0); }
+        100% { box-shadow: 0 0 0 0 rgba(37,170,225,0); }
+      }
+      @keyframes pulse-glow-white {
+        0%   { box-shadow: 0 0 0 0 rgba(229,226,225,0.4); }
+        70%  { box-shadow: 0 0 0 15px rgba(229,226,225,0); }
+        100% { box-shadow: 0 0 0 0 rgba(229,226,225,0); }
+      }
+      .cta-pulse-blue  { animation: pulse-glow-blue 3s infinite; }
+      .cta-pulse-white { animation: pulse-glow-white 3s infinite; }
+
+      @keyframes fade-in-up          { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+      @keyframes fade-in-up-delay-1  { 0%{opacity:0;transform:translateY(20px);}  40%{opacity:0;transform:translateY(20px);}  100%{opacity:1;transform:translateY(0);} }
+      @keyframes fade-in-up-delay-2  { 0%{opacity:0;transform:translateY(20px);}  60%{opacity:0;transform:translateY(20px);}  100%{opacity:1;transform:translateY(0);} }
+      @keyframes fade-in-up-delay-3  { 0%{opacity:0;transform:translateY(20px);}  80%{opacity:0;transform:translateY(20px);}  100%{opacity:1;transform:translateY(0);} }
+      @keyframes float-up            { 0%,100%{transform:translateY(0px);} 50%{transform:translateY(-8px);} }
+
+      .hero-badge       { animation: fade-in-up 0.8s ease-out, float-up 4s ease-in-out 0.8s infinite; }
+      .hero-title       { animation: fade-in-up-delay-1 1.2s ease-out, float-up 4.5s ease-in-out 1.2s infinite; }
+      .hero-accent      { animation: fade-in-up-delay-1 1.2s ease-out, float-up 4.5s ease-in-out 1.2s infinite; }
+      .hero-divider     { animation: fade-in-up-delay-2 1.2s ease-out, float-up 5s ease-in-out 1.4s infinite; }
+      .hero-description { animation: fade-in-up-delay-2 1.2s ease-out, float-up 4.5s ease-in-out 1.2s infinite; }
+      .hero-cta         { animation: fade-in-up-delay-3 1.2s ease-out, float-up 5s ease-in-out 1.4s infinite; }
+
+      .custom-scroll::-webkit-scrollbar       { width: 4px; }
+      .custom-scroll::-webkit-scrollbar-track { background: #050505; }
+      .custom-scroll::-webkit-scrollbar-thumb { background: #1a1a1a; }
+
+      /* Hero canvas sits behind all hero content */
+      #heroCanvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.82;
+      }
+    </style>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              tertiary: "#c9c6c5",
+              background: "#050505",
+              "on-tertiary-fixed": "#1c1b1b",
+              "on-primary": "#003549",
+              "error-container": "#93000a",
+              "inverse-on-surface": "#313030",
+              "primary-fixed-dim": "#7bd0ff",
+              primary: "#25AAE1",
+              "on-primary-container": "#003b51",
+              "secondary-fixed": "#e2e2e2",
+              surface: "#0D0D0D",
+              error: "#ffb4ab",
+              "inverse-surface": "#e5e2e1",
+              "surface-tint": "#7bd0ff",
+              "on-error": "#690005",
+              "on-surface-variant": "#bdc8d0",
+              "secondary-fixed-dim": "#c6c6c7",
+              "secondary-container": "#454747",
+              outline: "#1A1A1A",
+              "on-primary-fixed": "#001e2c",
+              "on-surface": "#e5e2e1",
+              "on-secondary-container": "#b4b5b5",
+              "inverse-primary": "#00668a",
+              "surface-container": "#201f1f",
+              "on-tertiary-container": "#363636",
+              "tertiary-fixed-dim": "#c9c6c5",
+              secondary: "#c6c6c7",
+              "outline-variant": "#3e484f",
+              "tertiary-fixed": "#e5e2e1",
+              "on-background": "#e5e2e1",
+              "on-primary-fixed-variant": "#004c69",
+              "tertiary-container": "#a09e9e",
+              "surface-container-lowest": "#000000",
+              "surface-container-highest": "#353534",
+              "on-secondary-fixed-variant": "#454747",
+              "primary-fixed": "#c4e7ff",
+              "on-error-container": "#ffdad6",
+              "on-tertiary-fixed-variant": "#474646",
+              "on-secondary": "#2f3131",
+              "surface-container-high": "#2a2a2a",
+              "surface-bright": "#3a3939",
+              "on-secondary-fixed": "#1a1c1c",
+              "surface-variant": "#353534",
+              "surface-container-low": "#1c1b1b",
+              "surface-dim": "#131313",
+              "on-tertiary": "#313030",
+              "primary-container": "#25aae1",
+            },
+            borderRadius: {
+              DEFAULT: "0px", lg: "0px", xl: "0px", full: "9999px",
+            },
+            spacing: {
+              "margin-mobile": "24px",
+              base: "8px",
+              "section-gap": "160px",
+              gutter: "32px",
+              "margin-desktop": "80px",
+              "container-max": "1440px",
+            },
+            fontFamily: {
+              "body-lg": ["JetBrains Mono"],
+              "body-md": ["JetBrains Mono"],
+              "headline-lg": ["Inter"],
+              "headline-md": ["Inter"],
+              "label-caps": ["JetBrains Mono"],
+              "headline-lg-mobile": ["Inter"],
+              "display-lg": ["Inter"],
+            },
+            fontSize: {
+              "body-lg": ["18px", { lineHeight:"1.7", fontWeight:"400" }],
+              "body-md": ["14px", { lineHeight:"1.6", fontWeight:"400" }],
+              "headline-lg": ["48px", { lineHeight:"1.1", letterSpacing:"-0.03em", fontWeight:"800" }],
+              "headline-md": ["28px", { lineHeight:"1.2", fontWeight:"700" }],
+              "label-caps": ["13px", { lineHeight:"1", letterSpacing:"0.15em", fontWeight:"600" }],
+              "headline-lg-mobile": ["36px", { lineHeight:"1.2", letterSpacing:"-0.02em", fontWeight:"800" }],
+              "display-lg": ["80px", { lineHeight:"1.05", letterSpacing:"-0.05em", fontWeight:"800" }],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-background text-on-background font-body-md custom-scroll overflow-x-hidden">
+
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full bg-background/80 backdrop-blur-lg z-50 border-b border-outline-variant">
+      <div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+        <img class="w-24 brightness-150"
+          style="filter: brightness(1.5) drop-shadow(0 0 8px rgba(37,170,225,0.6));"
+          src="/images/cf trading nobg-03.png" />
+        <div class="flex items-center gap-6">
+          <button class="bg-primary text-on-primary-fixed font-label-caps px-6 py-2.5 hover:brightness-110 transition-all duration-300 cursor-pointer active:scale-95">
+            Join Telegram
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- SECTION 1: HERO -->
+    <header class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-background">
+      <div class="absolute inset-0 grid-overlay opacity-40"></div>
+      <div class="absolute inset-0 noise-overlay"></div>
+
+      <!-- LIVE TRADING ANIMATION CANVAS -->
+      <canvas id="heroCanvas"></canvas>
+
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative w-full" style="z-index:2;">
+        <div class="max-w-4xl">
+          <div class="hero-badge inline-block py-1.5 px-4 border border-primary/40 bg-primary/10 text-primary text-label-caps mb-8">
+            CAPITAL FLOW • ELITE DISCIPLINE
+          </div>
+          <h1 class="hero-title font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-8 leading-none">
+            Where Traders Build Discipline <br />
+            <span class="hero-accent text-primary">Not Dependence.</span>
+          </h1>
+          <div class="hero-divider h-1.5 w-40 bg-primary mb-10 shadow-[0_0_25px_rgba(37,170,225,0.8)]"></div>
+          <p class="hero-description font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-12 leading-relaxed">
+            Join a disciplined trading community focused on clarity, consistency, and real market understanding — No hype. No signal spam.
+          </p>
+          <div class="hero-cta flex flex-col sm:flex-row gap-6">
+            <a class="cta-pulse-blue bg-primary text-on-primary-fixed px-10 py-6 flex items-center justify-center gap-4 transition-all duration-300 font-label-caps text-label-caps group border border-primary/20" href="#">
+              <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="send">send</span>
+              Join the Free Telegram Community
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION 2 & 3: WHO THIS IS FOR / NOT FOR -->
+    <section class="py-section-gap bg-surface-container-lowest relative">
+      <div class="absolute inset-0 noise-overlay"></div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-gutter relative z-10">
+        <!-- WHO FOR -->
+        <div class="border border-outline p-12 bg-surface hover:border-primary/30 transition-colors duration-500">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-12 uppercase tracking-[0.2em]">This Is For You If:</h2>
+          <ul class="space-y-8">
+            <li class="flex items-start gap-5 font-body-lg text-body-lg">
+              <span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings:'FILL' 1">check_circle</span>
+              <span>You're tired of inconsistent results and "guru" promises.</span>
+            </li>
+            <li class="flex items-start gap-5 font-body-lg text-body-lg">
+              <span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings:'FILL' 1">check_circle</span>
+              <span>You've blown accounts or struggle with emotional discipline.</span>
+            </li>
+            <li class="flex items-start gap-5 font-body-lg text-body-lg">
+              <span class="material-symbols-outlined text-primary mt-1" style="font-variation-settings:'FILL' 1">check_circle</span>
+              <span>You want to actually understand the market, not gamble in it.</span>
+            </li>
+          </ul>
+        </div>
+        <!-- NOT FOR -->
+        <div class="border border-outline p-12 bg-background hover:border-error/20 transition-colors duration-500">
+          <h2 class="font-headline-md text-headline-md text-on-surface mb-12 uppercase tracking-[0.2em] opacity-40">What This Is NOT</h2>
+          <ul class="space-y-8">
+            <li class="flex items-start gap-5 font-body-lg text-body-lg opacity-60">
+              <span class="material-symbols-outlined text-error mt-1">cancel</span>
+              <span>No signal spamming or copy-trading shortcuts.</span>
+            </li>
+            <li class="flex items-start gap-5 font-body-lg text-body-lg opacity-60">
+              <span class="material-symbols-outlined text-error mt-1">cancel</span>
+              <span>No 'get rich quick' mentality or success hype.</span>
+            </li>
+            <li class="flex items-start gap-5 font-body-lg text-body-lg opacity-60">
+              <span class="material-symbols-outlined text-error mt-1">cancel</span>
+              <span>No fake profits or edited screenshots.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: WHAT YOU GET INSIDE -->
+    <section class="py-section-gap bg-background border-y border-outline-variant relative overflow-hidden">
+      <div class="absolute inset-0 grid-overlay opacity-10"></div>
+      <div class="absolute inset-0 noise-overlay"></div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface text-center mb-24 font-extrabold">WHAT YOU GET INSIDE</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+          <div class="border-t-4 border-primary bg-surface p-10 border-x border-b border-outline hover:translate-y-[-8px] transition-all duration-500 group shadow-lg">
+            <span class="material-symbols-outlined text-on-surface mb-8 text-4xl group-hover:text-primary transition-colors">bar_chart</span>
+            <h3 class="font-label-caps text-label-caps text-primary mb-5">Market Insights</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Deep dive analysis of major pairs and trends.</p>
+          </div>
+          <div class="border-t-4 border-primary bg-surface p-10 border-x border-b border-outline hover:translate-y-[-8px] transition-all duration-500 group shadow-lg">
+            <span class="material-symbols-outlined text-on-surface mb-8 text-4xl group-hover:text-primary transition-colors">magnification_large</span>
+            <h3 class="font-label-caps text-label-caps text-primary mb-5">Trade Breakdowns</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Step-by-step logic behind every high-conviction trade.</p>
+          </div>
+          <div class="border-t-4 border-primary bg-surface p-10 border-x border-b border-outline hover:translate-y-[-8px] transition-all duration-500 group shadow-lg">
+            <span class="material-symbols-outlined text-on-surface mb-8 text-4xl group-hover:text-primary transition-colors">mic</span>
+            <h3 class="font-label-caps text-label-caps text-primary mb-5">Live Sessions</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Real-time market walkthroughs and Q&amp;A sessions.</p>
+          </div>
+          <div class="border-t-4 border-primary bg-surface p-10 border-x border-b border-outline hover:translate-y-[-8px] transition-all duration-500 group shadow-lg">
+            <span class="material-symbols-outlined text-on-surface mb-8 text-4xl group-hover:text-primary transition-colors">groups</span>
+            <h3 class="font-label-caps text-label-caps text-primary mb-5">Focused Environment</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Network with serious traders without the noise.</p>
+          </div>
+          <div class="border-t-4 border-primary bg-surface p-10 border-x border-b border-outline hover:translate-y-[-8px] transition-all duration-500 group shadow-lg">
+            <span class="material-symbols-outlined text-on-surface mb-8 text-4xl group-hover:text-primary transition-colors">sync</span>
+            <h3 class="font-label-caps text-label-caps text-primary mb-5">Continuous Updates</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Daily adjustments based on evolving market conditions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: HOW IT WORKS -->
+    <section class="py-section-gap bg-surface-container-lowest relative">
+      <div class="absolute inset-0 noise-overlay"></div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-24 text-center font-extrabold">THE ROADMAP</h2>
+        <div class="relative max-w-5xl mx-auto">
+          <div class="absolute left-1/2 top-0 bottom-0 w-px bg-primary/40 hidden md:block"></div>
+          <div class="space-y-32">
+            <div class="relative flex flex-col md:flex-row items-center justify-between group">
+              <div class="md:w-5/12 text-center md:text-right">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Join Telegram</h3>
+                <p class="font-body-md text-on-surface-variant">Access our secure communication terminal.</p>
+              </div>
+              <div class="w-12 h-12 bg-primary flex items-center justify-center relative z-10 my-6 md:my-0 shadow-[0_0_15px_rgba(37,170,225,0.3)]">
+                <span class="font-label-caps text-on-primary-fixed">01</span>
+              </div>
+              <div class="md:w-5/12"></div>
+            </div>
+            <div class="relative flex flex-col md:flex-row-reverse items-center justify-between group">
+              <div class="md:w-5/12 text-center md:text-left">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Enter Group</h3>
+                <p class="font-body-md text-on-surface-variant">Introduce yourself to the core community architecture.</p>
+              </div>
+              <div class="w-12 h-12 bg-primary flex items-center justify-center relative z-10 my-6 md:my-0 shadow-[0_0_15px_rgba(37,170,225,0.3)]">
+                <span class="font-label-caps text-on-primary-fixed">02</span>
+              </div>
+              <div class="md:w-5/12"></div>
+            </div>
+            <div class="relative flex flex-col md:flex-row items-center justify-between group">
+              <div class="md:w-5/12 text-center md:text-right">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Learn Structure</h3>
+                <p class="font-body-md text-on-surface-variant">Master our proprietary technical framework.</p>
+              </div>
+              <div class="w-12 h-12 bg-primary flex items-center justify-center relative z-10 my-6 md:my-0 shadow-[0_0_15px_rgba(37,170,225,0.3)]">
+                <span class="font-label-caps text-on-primary-fixed">03</span>
+              </div>
+              <div class="md:w-5/12"></div>
+            </div>
+            <div class="relative flex flex-col md:flex-row-reverse items-center justify-between group">
+              <div class="md:w-5/12 text-center md:text-left">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Engage</h3>
+                <p class="font-body-md text-on-surface-variant">Participate in breakdowns and live market calls.</p>
+              </div>
+              <div class="w-12 h-12 bg-primary flex items-center justify-center relative z-10 my-6 md:my-0 shadow-[0_0_15px_rgba(37,170,225,0.3)]">
+                <span class="font-label-caps text-on-primary-fixed">04</span>
+              </div>
+              <div class="md:w-5/12"></div>
+            </div>
+            <div class="relative flex flex-col md:flex-row items-center justify-between group">
+              <div class="md:w-5/12 text-center md:text-right">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-3">Stay Consistent</h3>
+                <p class="font-body-md text-on-surface-variant">Compound your knowledge and your capital.</p>
+              </div>
+              <div class="w-12 h-12 bg-primary flex items-center justify-center relative z-10 my-6 md:my-0 shadow-[0_0_15px_rgba(37,170,225,0.3)]">
+                <span class="font-label-caps text-on-primary-fixed">05</span>
+              </div>
+              <div class="md:w-5/12"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: AUTHORITY -->
+    <section class="py-section-gap bg-surface relative">
+      <div class="absolute inset-0 noise-overlay"></div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <div class="border-l-8 border-primary pl-12 md:pl-20 py-20 bg-background/60 shadow-2xl">
+          <h2 class="font-display-lg text-headline-lg-mobile md:text-display-lg text-on-surface mb-12 font-extrabold">We Are Not a Signal Group.</h2>
+          <p class="font-body-lg text-body-lg text-on-surface-variant max-w-4xl mb-16 leading-loose">
+            This is a structured environment built for traders who are serious about their career. We don't provide fishing; we teach you how the ocean works. Every analysis is rooted in real market understanding, institutional flow, and psychological resilience.
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+            <div class="flex items-center gap-6">
+              <span class="material-symbols-outlined text-primary text-4xl">verified</span>
+              <span class="font-label-caps text-label-caps text-lg">Verified Logic</span>
+            </div>
+            <div class="flex items-center gap-6">
+              <span class="material-symbols-outlined text-primary text-4xl">psychology</span>
+              <span class="font-label-caps text-label-caps text-lg">Mindset Mastery</span>
+            </div>
+            <div class="flex items-center gap-6">
+              <span class="material-symbols-outlined text-primary text-4xl">account_balance</span>
+              <span class="font-label-caps text-label-caps text-lg">Risk Architecture</span>
+            </div>
+          </div>
+          <p class="font-body-lg italic text-on-surface text-xl">"No shortcuts. No noise. No dependency."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: WHY DIFFERENT -->
+    <section class="py-section-gap bg-background relative overflow-hidden">
+      <div class="absolute inset-0 grid-overlay opacity-5"></div>
+      <div class="absolute inset-0 noise-overlay"></div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface text-center mb-24 font-extrabold">WHY THIS COMMUNITY IS DIFFERENT</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+          <div class="p-12 border border-outline bg-surface group hover:border-primary transition-all duration-500 shadow-xl">
+            <span class="material-symbols-outlined text-primary text-5xl mb-8 group-hover:scale-110 transition-transform">security</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-5 font-bold">Discipline</h3>
+            <p class="font-body-md text-on-surface-variant leading-relaxed">We prioritize capital preservation over ego. Our rules are absolute, and our community enforces them.</p>
+          </div>
+          <div class="p-12 border border-outline bg-surface group hover:border-primary transition-all duration-500 shadow-xl">
+            <span class="material-symbols-outlined text-primary text-5xl mb-8 group-hover:scale-110 transition-transform">visibility</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-5 font-bold">Clarity</h3>
+            <p class="font-body-md text-on-surface-variant leading-relaxed">No vague charts. No "maybe it goes up." We identify precise institutional levels and wait for confirmation.</p>
+          </div>
+          <div class="p-12 border border-outline bg-surface group hover:border-primary transition-all duration-500 shadow-xl">
+            <span class="material-symbols-outlined text-primary text-5xl mb-8 group-hover:scale-110 transition-transform">reorder</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-5 font-bold">Process</h3>
+            <p class="font-body-md text-on-surface-variant leading-relaxed">Trading is a business. We provide the repeatable systems required to scale your results over time.</p>
+          </div>
+        </div>
+        <p class="mt-20 text-center italic text-on-surface-variant font-body-lg">Excellence is not an act, but a habit. We build that habit together.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 8: FINAL CTA -->
+    <section class="py-section-gap bg-surface-container-lowest relative overflow-hidden">
+      <div class="absolute inset-0 bg-primary/5"></div>
+      <div class="absolute inset-0 grid-overlay opacity-15"></div>
+      <div class="absolute inset-0 noise-overlay"></div>
+      <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="font-display-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-12 font-extrabold leading-tight">
+            If you're serious about improving as a trader, this is where it starts.
+          </h2>
+          <div class="relative inline-block group">
+            <div class="absolute -inset-2 bg-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition duration-1000"></div>
+            <a class="cta-pulse-white relative bg-on-surface text-background px-14 py-8 flex items-center justify-center gap-5 font-label-caps text-label-caps hover:bg-primary hover:text-on-primary-fixed transition-all duration-500 border border-on-surface/10" href="#">
+              <span class="material-symbols-outlined text-2xl">send</span>
+              JOIN THE FREE TELEGRAM COMMUNITY
+            </a>
+          </div>
+          <p class="mt-12 font-label-caps text-on-surface-variant tracking-[0.3em] text-[11px] uppercase">Strictly No Spam • Institutional Grade Insights Only</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         HERO CANVAS ANIMATION
+    ============================================================ -->
+    <script>
+    (function () {
+      const canvas = document.getElementById('heroCanvas');
+      const ctx = canvas.getContext('2d');
+
+      const PRIMARY      = '#25AAE1';
+      const PRIMARY_DIM  = 'rgba(37,170,225,0.18)';
+      const GREEN        = '#00e676';
+      const RED          = '#ff5252';
+      const TEXT_DIM     = 'rgba(229,226,225,0.18)';
+      const TEXT_MID     = 'rgba(229,226,225,0.5)';
+
+      function resize() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      // ---- CANDLES ----
+      const NUM_CANDLES = 42;
+      let candles = [];
+      function genCandles() {
+        candles = [];
+        let price = 1.2450;
+        for (let i = 0; i < NUM_CANDLES; i++) {
+          const open  = price;
+          const move  = (Math.random() - 0.48) * 0.0080;
+          const close = open + move;
+          const high  = Math.max(open, close) + Math.random() * 0.0030;
+          const low   = Math.min(open, close) - Math.random() * 0.0030;
+          candles.push({ open, close, high, low });
+          price = close;
+        }
+      }
+      genCandles();
+
+      // ---- TICKER PAIRS ----
+      const PAIRS = ['EUR/USD', 'GBP/USD', 'USD/JPY', 'XAU/USD', 'NAS100', 'BTC/USD'];
+      const BASES = [1.0845, 1.2720, 149.82, 2345.50, 17840, 68250];
+      let tickers = PAIRS.map((p, i) => ({
+        pair: p,
+        price: BASES[i],
+        change: (Math.random() - 0.5) * 0.8,
+        x: 0
+      }));
+
+      // ---- PARTICLES ----
+      let particles = [];
+      function initParticles() {
+        particles = [];
+        for (let i = 0; i < 42; i++) {
+          particles.push({
+            x:     Math.random() * (canvas.width  || 1440),
+            y:     Math.random() * (canvas.height || 900),
+            r:     Math.random() * 1.2 + 0.3,
+            speed: Math.random() * 0.18 + 0.04,
+            drift: (Math.random() - 0.5) * 0.12,
+            alpha: Math.random() * 0.35 + 0.05
+          });
+        }
+      }
+      initParticles();
+      window.addEventListener('resize', initParticles);
+
+      // ---- SCAN LINE ----
+      let scanY = 0;
+
+      // ---- CROSSHAIR ----
+      let crossX = 0.72, crossY = 0.38;
+      let crossTargetX = 0.72, crossTargetY = 0.38;
+      setInterval(() => {
+        crossTargetX = 0.3 + Math.random() * 0.5;
+        crossTargetY = 0.2 + Math.random() * 0.5;
+      }, 2800);
+
+      // ---- LIVE PRICE ----
+      let livePrice = 1.08452;
+      let liveDelta = 0;
+      setInterval(() => {
+        liveDelta   = (Math.random() - 0.49) * 0.00025;
+        livePrice  += liveDelta;
+        const last  = candles[candles.length - 1];
+        last.close  = livePrice;
+        last.high   = Math.max(last.high, livePrice);
+        last.low    = Math.min(last.low,  livePrice);
+        if (Math.random() < 0.12) {
+          candles.shift();
+          candles.push({ open: livePrice, close: livePrice, high: livePrice + 0.0005, low: livePrice - 0.0005 });
+        }
+      }, 280);
+
+      // ---- TICKER X INIT ----
+      let tickerReady = false;
+
+      // ---- DRAW LOOP ----
+      let frame = 0;
+      function draw() {
+        const W = canvas.width, H = canvas.height;
+        if (!W || !H) { requestAnimationFrame(draw); return; }
+
+        ctx.clearRect(0, 0, W, H);
+
+        // init ticker x positions once we know W
+        if (!tickerReady) {
+          tickers.forEach((tk, i) => { tk.x = W * 0.05 + i * 160; });
+          tickerReady = true;
+        }
+
+        // ---- CHART AREA ----
+        const chartX = W * 0.05;
+        const chartY = H * 0.14;
+        const chartW = W * 0.60;
+        const chartH = H * 0.60;
+
+        // Chart BG
+        ctx.fillStyle   = 'rgba(13,13,13,0.55)';
+        ctx.strokeStyle = PRIMARY_DIM;
+        ctx.lineWidth   = 0.8;
+        ctx.beginPath(); ctx.rect(chartX, chartY, chartW, chartH);
+        ctx.fill(); ctx.stroke();
+
+        // H grid lines
+        for (let i = 1; i < 6; i++) {
+          const gy = chartY + chartH * (i / 6);
+          ctx.strokeStyle = 'rgba(37,170,225,0.07)';
+          ctx.lineWidth   = 0.5;
+          ctx.beginPath(); ctx.moveTo(chartX, gy); ctx.lineTo(chartX + chartW, gy); ctx.stroke();
+        }
+        // V grid lines
+        for (let i = 1; i < 8; i++) {
+          const gx = chartX + chartW * (i / 8);
+          ctx.beginPath(); ctx.moveTo(gx, chartY); ctx.lineTo(gx, chartY + chartH); ctx.stroke();
+        }
+
+        // Price range
+        const prices = candles.flatMap(c => [c.high, c.low]);
+        const pMin   = Math.min(...prices);
+        const pMax   = Math.max(...prices);
+        const pRange = pMax - pMin || 0.001;
+        function py(p) { return chartY + chartH * (1 - (p - pMin) / pRange); }
+
+        // MA line
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(255,200,50,0.45)';
+        ctx.lineWidth   = 1.2;
+        candles.forEach((c, i) => {
+          const cx  = chartX + (i + 0.5) * (chartW / NUM_CANDLES);
+          const mid = (c.open + c.close) / 2;
+          if (i === 0) ctx.moveTo(cx, py(mid)); else ctx.lineTo(cx, py(mid));
+        });
+        ctx.stroke();
+
+        // Candles
+        const cw = chartW / NUM_CANDLES;
+        candles.forEach((c, i) => {
+          const cx   = chartX + i * cw + cw * 0.5;
+          const bull = c.close >= c.open;
+          ctx.strokeStyle = bull ? GREEN : RED;
+          ctx.lineWidth   = 0.8;
+          ctx.beginPath(); ctx.moveTo(cx, py(c.high)); ctx.lineTo(cx, py(c.low)); ctx.stroke();
+          const bodyTop = py(Math.max(c.open, c.close));
+          const bodyH   = Math.max(1.5, Math.abs(py(c.open) - py(c.close)));
+          ctx.fillStyle = bull ? 'rgba(0,230,118,0.75)' : 'rgba(255,82,82,0.75)';
+          ctx.fillRect(cx - cw * 0.28, bodyTop, cw * 0.56, bodyH);
+        });
+
+        // Crosshair
+        crossX += (crossTargetX - crossX) * 0.018;
+        crossY += (crossTargetY - crossY) * 0.018;
+        const cxPos = chartX + crossX * chartW;
+        const cyPos = chartY + crossY * chartH;
+        ctx.setLineDash([3, 5]);
+        ctx.strokeStyle = 'rgba(37,170,225,0.35)';
+        ctx.lineWidth   = 0.8;
+        ctx.beginPath(); ctx.moveTo(cxPos, chartY);   ctx.lineTo(cxPos, chartY + chartH); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(chartX, cyPos);   ctx.lineTo(chartX + chartW, cyPos); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Crosshair price label
+        const chPrice = (pMin + (1 - crossY) * pRange).toFixed(5);
+        ctx.fillStyle = PRIMARY;
+        ctx.fillRect(chartX + chartW + 1, cyPos - 9, 62, 18);
+        ctx.fillStyle = '#001a26';
+        ctx.font      = '9px JetBrains Mono, monospace';
+        ctx.fillText(chPrice, chartX + chartW + 4, cyPos + 4);
+
+        // Crosshair time label
+        const hr = Math.floor(9 + crossX * 6);
+        const mn = Math.floor(crossX * 60) % 60;
+        ctx.fillStyle = PRIMARY;
+        ctx.fillRect(cxPos - 22, chartY + chartH + 1, 44, 16);
+        ctx.fillStyle = '#001a26';
+        ctx.font      = '9px JetBrains Mono, monospace';
+        ctx.fillText(`${hr}:${mn < 10 ? '0' + mn : mn}`, cxPos - 18, chartY + chartH + 11);
+
+        // Y axis labels
+        ctx.fillStyle = TEXT_MID;
+        ctx.font      = '9px JetBrains Mono, monospace';
+        for (let i = 0; i <= 5; i++) {
+          const p = pMin + pRange * (i / 5);
+          ctx.fillText(p.toFixed(5), chartX + chartW + 3, py(p) + 3);
+        }
+
+        // Scan line
+        scanY = (scanY + 0.4) % chartH;
+        const scanGrad = ctx.createLinearGradient(chartX, chartY + scanY - 10, chartX, chartY + scanY + 4);
+        scanGrad.addColorStop(0,   'rgba(37,170,225,0)');
+        scanGrad.addColorStop(0.7, 'rgba(37,170,225,0.10)');
+        scanGrad.addColorStop(1,   'rgba(37,170,225,0.03)');
+        ctx.fillStyle = scanGrad;
+        ctx.fillRect(chartX, chartY + scanY - 10, chartW, 14);
+
+        // Live price dashed line
+        const liveY = py(livePrice);
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(37,170,225,0.6)';
+        ctx.lineWidth   = 0.9;
+        ctx.beginPath(); ctx.moveTo(chartX, liveY); ctx.lineTo(chartX + chartW, liveY); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = liveDelta >= 0 ? GREEN : RED;
+        ctx.fillRect(chartX - 68, liveY - 9, 66, 18);
+        ctx.fillStyle = '#000';
+        ctx.font      = 'bold 9px JetBrains Mono, monospace';
+        ctx.fillText(livePrice.toFixed(5), chartX - 66, liveY + 4);
+
+        // ---- TICKER STRIP ----
+        const tickY = chartY + chartH + 28;
+        ctx.fillStyle   = 'rgba(5,5,5,0.7)';
+        ctx.strokeStyle = PRIMARY_DIM;
+        ctx.lineWidth   = 0.6;
+        ctx.beginPath(); ctx.rect(chartX, tickY, chartW, 22);
+        ctx.fill(); ctx.stroke();
+        ctx.save();
+        ctx.beginPath(); ctx.rect(chartX, tickY, chartW, 22); ctx.clip();
+        tickers.forEach(tk => {
+          tk.x -= 0.7;
+          if (tk.x < chartX - 120) tk.x = chartX + chartW + 50;
+          const col = tk.change >= 0 ? GREEN : RED;
+          ctx.font      = 'bold 10px JetBrains Mono, monospace';
+          ctx.fillStyle = TEXT_MID;
+          ctx.fillText(tk.pair, tk.x, tickY + 14);
+          ctx.font      = '10px JetBrains Mono, monospace';
+          ctx.fillStyle = col;
+          ctx.fillText(' ' + tk.price.toFixed(2), tk.x + 52, tickY + 14);
+          ctx.fillText((tk.change >= 0 ? '+' : '') + tk.change.toFixed(2) + '%', tk.x + 110, tickY + 14);
+        });
+        ctx.restore();
+
+        // ---- RIGHT PANEL ----
+        const panX = W * 0.68;
+        const panY = H * 0.14;
+        const panW = W * 0.26;
+        const panH = H * 0.60;
+        ctx.fillStyle   = 'rgba(13,13,13,0.55)';
+        ctx.strokeStyle = PRIMARY_DIM;
+        ctx.lineWidth   = 0.8;
+        ctx.beginPath(); ctx.rect(panX, panY, panW, panH);
+        ctx.fill(); ctx.stroke();
+
+        ctx.font      = 'bold 9px JetBrains Mono, monospace';
+        ctx.fillStyle = PRIMARY;
+        ctx.fillText('LIVE FEED', panX + 10, panY + 16);
+        ctx.strokeStyle = 'rgba(37,170,225,0.2)';
+        ctx.lineWidth   = 0.5;
+        ctx.beginPath(); ctx.moveTo(panX, panY + 22); ctx.lineTo(panX + panW, panY + 22); ctx.stroke();
+
+        const feedPairs = ['EUR/USD', 'GBP/JPY', 'USD/CAD', 'XAU/USD', 'SPX500'];
+        const feedBases = [1.08452, 186.24, 1.3642, 2345.8, 5412.3];
+        feedPairs.forEach((p, i) => {
+          const fy    = panY + 36 + i * 22;
+          const delta = Math.sin(frame * 0.03 + i) * 0.0002;
+          const price = feedBases[i] + delta;
+          const up    = Math.sin(frame * 0.03 + i) > 0;
+          ctx.font      = '9px JetBrains Mono, monospace';
+          ctx.fillStyle = TEXT_MID;
+          ctx.fillText(p, panX + 8, fy);
+          ctx.fillStyle = up ? GREEN : RED;
+          ctx.fillText(price.toFixed(feedBases[i] > 100 ? 2 : 5), panX + panW * 0.44, fy);
+          // mini sparkline
+          ctx.strokeStyle = up ? 'rgba(0,230,118,0.5)' : 'rgba(255,82,82,0.5)';
+          ctx.lineWidth   = 1;
+          ctx.beginPath();
+          for (let s = 0; s < 16; s++) {
+            const sx = panX + panW * 0.82 + s * 2.2;
+            const sy = fy - 4 + Math.sin(frame * 0.05 + i * 2 + s * 0.5) * 4;
+            if (s === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+          }
+          ctx.stroke();
+        });
+
+        // Volume bars
+        const vbY = panY + panH * 0.56;
+        ctx.font      = 'bold 9px JetBrains Mono, monospace';
+        ctx.fillStyle = PRIMARY;
+        ctx.fillText('VOLUME', panX + 10, vbY);
+        ctx.strokeStyle = 'rgba(37,170,225,0.2)';
+        ctx.lineWidth   = 0.5;
+        ctx.beginPath(); ctx.moveTo(panX, vbY + 5); ctx.lineTo(panX + panW, vbY + 5); ctx.stroke();
+        const vols = [0.8, 0.4, 0.9, 0.5, 0.7, 0.3, 0.6, 1.0]
+          .map((v, i) => v * 0.7 + 0.3 * Math.abs(Math.sin(frame * 0.04 + i)));
+        const bw = (panW - 20) / (vols.length * 1.4);
+        vols.forEach((v, i) => {
+          const bx = panX + 10 + i * (bw * 1.4);
+          const bh = v * (panH * 0.35);
+          ctx.fillStyle = `rgba(37,170,225,${(0.25 + v * 0.5).toFixed(2)})`;
+          ctx.fillRect(bx, vbY + 5 + (panH * 0.35) - bh, bw, bh);
+        });
+
+        // ---- PARTICLES ----
+        particles.forEach(p => {
+          p.y -= p.speed;
+          p.x += p.drift;
+          if (p.y < 0)         { p.y = H; p.x = Math.random() * W; }
+          if (p.x < 0 || p.x > W) p.x = Math.random() * W;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(37,170,225,${p.alpha})`;
+          ctx.fill();
+        });
+
+        // ---- TOP STATUS BAR ----
+        ctx.fillStyle   = 'rgba(5,5,5,0.6)';
+        ctx.strokeStyle = PRIMARY_DIM;
+        ctx.lineWidth   = 0.6;
+        ctx.beginPath(); ctx.rect(W * 0.05, H * 0.06, W * 0.89, 20);
+        ctx.fill(); ctx.stroke();
+        const labels = ['EUR/USD', '1H', 'ICT', 'SMC', 'BIAS: BULLISH', 'NY SESSION'];
+        let lx = W * 0.07;
+        labels.forEach((l, i) => {
+          ctx.font      = 'bold 8px JetBrains Mono, monospace';
+          ctx.fillStyle = i === 4 ? GREEN : (i === 5 ? PRIMARY : TEXT_MID);
+          ctx.fillText(l, lx, H * 0.06 + 13);
+          lx += ctx.measureText(l).width + 20;
+          if (i < labels.length - 1) {
+            ctx.strokeStyle = 'rgba(37,170,225,0.2)';
+            ctx.lineWidth   = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(lx - 10, H * 0.06 + 4);
+            ctx.lineTo(lx - 10, H * 0.06 + 16);
+            ctx.stroke();
+          }
+        });
+
+        // Blinking cursor dot
+        if (Math.floor(frame / 20) % 2 === 0) {
+          ctx.beginPath();
+          ctx.arc(W * 0.94, H * 0.06 + 10, 3, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,230,118,0.8)';
+          ctx.fill();
+        }
+
+        frame++;
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+    </script>
+
+    <!-- ============================================================
+         PAGE INTERACTION SCRIPTS
+    ============================================================ -->
+    <script>
+      // Cursor glow atmosphere
+      document.addEventListener('mousemove', (e) => {
+        const existing = document.getElementById('cursor-glow');
+        if (existing) existing.remove();
+        const cursorGlow = document.createElement('div');
+        cursorGlow.id = 'cursor-glow';
+        cursorGlow.style.cssText = `
+          position:fixed; width:400px; height:400px; border-radius:50%;
+          background:radial-gradient(circle,rgba(37,170,225,0.04) 0%,transparent 70%);
+          left:${e.clientX - 200}px; top:${e.clientY - 200}px;
+          pointer-events:none; z-index:1;
+        `;
+        document.body.appendChild(cursorGlow);
+      });
+
+      // Scroll reveal
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+            entry.target.classList.remove('opacity-0', 'translate-y-20');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('section').forEach(section => {
+        section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-20', 'ease-out');
+        observer.observe(section);
+      });
+    </script>
+
+  </body>
+</html>
